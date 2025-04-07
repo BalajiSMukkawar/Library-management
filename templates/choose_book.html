@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Book</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>📚 Choose a Book to Issue</h2>
+    <form method="POST" action="{{ url_for('index') }}">
+        <p>Issuing to Receiver ID: <strong>{{ receiver_id }}</strong></p>
+    </form>
+
+    {% for book in books %}
+        <div class="book-card">
+            <p><strong>{{ book.title }}</strong></p>
+            <form method="POST" action="{{ url_for('issue_book', book_id=book.book_id, receiver_id=receiver_id) }}">
+                <input type="date" name="issue_date" required>
+                <button type="submit">📖 Issue</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>📚 Library Management System</h1>
+
+    <a href="{{ url_for('add_book') }}" class="btn">➕ Add New Book</a>
+    <a href="{{ url_for('register_user') }}" class="btn">📝 Register New User</a>
+    <a href="{{ url_for('select_receiver') }}" class="btn">📖 Issue a Book</a>
+    <a href="{{ url_for('view_history') }}" class="btn">📜 View History</a>
+
+    <h2>📦 All Books</h2>
+    <ul>
+        {% for book in books %}
+            <li>
+                <strong>{{ book.title }}</strong>
+                <div>Status: 
+                    {% if book.availability_status %}
+                        <span class="available">Available</span>
+                    {% else %}
+                        <span class="issued">Issued to {{ book.book_receiver_id }}</span>
+                        <br><span class="date">Issued On: {{ book.issue_date }}</span>
+                        <br><span class="date">Return Date: {{ book.return_date if book.return_date else "Not returned yet" }}</span>
+                    {% endif %}
+                </div>
+
+                {% if not book.availability_status %}
+                <form action="{{ url_for('return_book', book_id=book.book_id) }}" method="POST" class="inline-form">
+                    <input type="date" name="return_date" required>
+                    <button type="submit">🔄 Return</button>
+                </form>
+                {% endif %}
+
+                <form action="{{ url_for('delete_book', book_id=book.book_id) }}" method="GET" class="inline-form">
+                    <button type="submit" class="danger">🗑️ Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

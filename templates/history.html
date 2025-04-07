@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>📜 Book Issue/Return History</h2>
+    <table>
+        <tr>
+            <th>Book Title</th>
+            <th>Receiver ID</th>
+            <th>Issue Date</th>
+            <th>Return Date</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for record in history %}
+            <tr>
+                <td>{{ record.title }}</td>
+                <td>{{ record.receiver_id }}</td>
+                <td>{{ record.issue_date }}</td>
+                <td>{{ record.return_date or "Pending" }}</td>
+                <td>{{ record.action_type.title() }}</td>
+                <td>{{ record.action_timestamp }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('index') }}" class="btn">⬅ Back to Home</a>
+</div>
+</body>
+</html>
